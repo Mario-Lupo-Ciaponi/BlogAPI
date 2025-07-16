@@ -1,4 +1,8 @@
+from django.contrib.auth import get_user_model
 from django.db import models
+
+
+UserModel = get_user_model()
 
 
 class Post(models.Model):
@@ -6,10 +10,27 @@ class Post(models.Model):
         max_length=50,
     )
     content = models.TextField()
-    author = models.CharField() # TODO: Add relations
+    author = models.ForeignKey(
+        UserModel,
+        on_delete=models.CASCADE,
+        related_name="posts",
+    )
     created_at = models.DateTimeField(
         auto_now_add=True,
     )
     updated_at = models.DateTimeField(
         auto_now_add=True,
+    )
+
+
+class Comment(models.Model):
+    author = models.ForeignKey(
+        UserModel,
+        on_delete=models.CASCADE,
+        related_name="comments_created",
+    )
+    posts = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE,
+        related_name="comments",
     )
