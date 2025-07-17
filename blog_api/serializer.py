@@ -6,7 +6,7 @@ from .models import Post, Comment
 
 class CommentSerializer(ModelSerializer):
     author = UserSerializer(read_only=True)
-
+    
     class Meta:
         model = Comment
         fields = ["author", "posts", "content", "created_at",]
